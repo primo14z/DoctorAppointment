@@ -1,13 +1,28 @@
 version: '3.8'
 
 services:
-  sql-server:
-    image: mcr.microsoft.com/mssql/server
-    container_name: your-sql-server-container
+  sql-server-db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
     environment:
-      SA_PASSWORD: YourPassword123!  # Set a strong password for the SA user
-      ACCEPT_EULA: Y
+      SA_PASSWORD: "YourStrongPassword"  # Set a strong password for the SA user
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Express"
+      MSSQL_TCP_PORT: "1433"  # Expose the SQL Server port
     ports:
-      - "1433:1433"
+      - "1433:1433"  # Expose the SQL Server port to the host machine
+    networks:
+      - mynetwork
     volumes:
-      - ./sql-server-data:/var/opt/mssql  # Mount a local directory to persist SQL Server data
+      - sql-server-data:/var/opt/mssql
+    healthcheck:
+      test: [ "CMD", "sqlcmd", "-U", "sa", "-P", "YourStrongPassword", "-Q", "SELECT 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  mynetwork:
+    driver: bridge
+
+volumes:
+  sql-server-data:

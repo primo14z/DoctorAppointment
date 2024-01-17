@@ -16,14 +16,14 @@ public class DoctorController : ControllerBase
         _doctorRepository = doctorRepository;
     }
 
-    [HttpGet]
+    [HttpGet("GetAppointments")]
     [Authorize(Roles = "Doctor")]
     public List<AppointmentDTO> GetAppointments(int id)
     {
         return _doctorRepository.GetAppointments(id);
     }
 
-    [HttpPost]
+    [HttpPost("ChangeAppointment")]
     [Authorize(Roles = "Doctor")]
     public IActionResult ChangeAppointment(int id, DateTime newDate)
     {
@@ -38,7 +38,7 @@ public class DoctorController : ControllerBase
         }
     }
 
-    [HttpPost]
+    [HttpPost("DeleteAppointment")]
     [Authorize(Roles = "Doctor")]
     public IActionResult DeleteAppointment(int id)
     {
@@ -53,7 +53,7 @@ public class DoctorController : ControllerBase
         }
     }
 
-    [HttpPost]
+    [HttpPost("RegisterDoctor")]
     public IActionResult RegisterDoctor(DoctorDTO doctor)
     {
         try

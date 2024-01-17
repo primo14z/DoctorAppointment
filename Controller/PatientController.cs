@@ -15,14 +15,14 @@ public class PatientController : ControllerBase
         _patientRepository = patientRepository;
     }
 
-    [HttpGet]
+    [HttpGet("GetDoctorList")]
     [Authorize(Roles = "Patient")]
     public async Task<IActionResult> GetDoctorList()
     {
         return Ok(await _patientRepository.GetDoctorList());
     }
 
-    [HttpPost]
+    [HttpPost("RegisterPatient")]
     public IActionResult RegisterPatient(string name)
     {
         try
@@ -36,7 +36,7 @@ public class PatientController : ControllerBase
         }
     }
 
-    [HttpGet]
+    [HttpGet("GetDoctorAppointments")]
     [Authorize(Roles = "Patient")]
     public IActionResult GetDoctorAppointments(int patientId, int doctorId, DateTime startDate, DateTime endDate)
     {

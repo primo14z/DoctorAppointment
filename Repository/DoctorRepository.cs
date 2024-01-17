@@ -22,16 +22,14 @@ public class DoctorRepository : IDoctorRepository
             .Include(x => x.Doctor)
             .Include(x => x.Patient)
             .Include(x => x.Date)
-            .Where(x => x.Doctor.Id == doctorId && x.Date.Date <= DateTime.Now)
+            .Where(x => x.Doctor.Id == doctorId 
+                && x.Date.Date >= DateTime.Now
+                && x.Date.Date.Hour >= x.Doctor.WorkStart
+                && x.Date.Date.Hour <= x.Doctor.WorkEnd)
             .Select(x => x).ToList();
 
         if (appointments.Any())
-        {
-            foreach (var appointment in appointments)
-            {
-                result.Add(new AppointmentDTO(appointment.Id, appointment.Date.Date, appointment.Doctor.Id, appointment.Patient.Id, appointment.Patient.Name));
-            }
-        }
+            appointments.ForEach(x => result.Add(new AppointmentDTO(x.Id, x.Date.Date, x.Doctor.Id, x.Patient.Id, x.Patient.Name)));
 
         return result;
     }
@@ -45,7 +43,9 @@ public class DoctorRepository : IDoctorRepository
             .Include(x => x.Date)
             .Where(x => x.Id == id).Single();
 
-        if (newDate > appointment.Date.Date)
+        if (newDate > appointment.Date.Date 
+            && appointment.Doctor.WorkStart <= newDate.Hour 
+            && appointment.Doctor.WorkEnd >= newDate.Hour)
         {
             appointment.Date.Date = newDate;
         }
@@ -67,9 +67,23 @@ public class DoctorRepository : IDoctorRepository
 
             _dbContext.SaveChanges();
         }
-        catch (Exception ex)
+        catch
         {
             throw new Exception("Appointment doesn't exist.");
+        }
+    }
+
+    public void RegisterDoctor(DoctorDTO doctorDTO)
+    {
+        try
+        {
+            _dbContext.Doctors.Add(new Doctor(doctorDTO.Name, doctorDTO.Department, doctorDTO.WorkStart, doctorDTO.WorkEnd));
+
+            _dbContext.SaveChanges();
+        }
+        catch
+        {
+            throw;
         }
     }
 }

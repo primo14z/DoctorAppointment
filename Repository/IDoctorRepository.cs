@@ -7,4 +7,5 @@ public interface IDoctorRepository
     public List<AppointmentDTO> GetAppointments(int doctorId);
     public void ChangeAppointment(int id, DateTime newDate);
     public void DeleteAppointment(int id);
+    public void RegisterDoctor(DoctorDTO doctor);
 }

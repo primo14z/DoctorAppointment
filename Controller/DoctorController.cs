@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Mesi.Repository;
 using Mesi.Models.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Mesi.Controller;
 
@@ -12,16 +13,18 @@ public class DoctorController : ControllerBase
 
     public DoctorController(IDoctorRepository doctorRepository)
     {
-       _doctorRepository = doctorRepository;
+        _doctorRepository = doctorRepository;
     }
 
     [HttpGet]
+    [Authorize(Roles = "Doctor")]
     public List<AppointmentDTO> GetAppointments(int id)
     {
         return _doctorRepository.GetAppointments(id);
     }
 
     [HttpPost]
+    [Authorize(Roles = "Doctor")]
     public IActionResult ChangeAppointment(int id, DateTime newDate)
     {
         try
@@ -36,7 +39,8 @@ public class DoctorController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult DeleteAppointment(int id) 
+    [Authorize(Roles = "Doctor")]
+    public IActionResult DeleteAppointment(int id)
     {
         try
         {
@@ -46,6 +50,20 @@ public class DoctorController : ControllerBase
         catch (Exception ex)
         {
             return BadRequest(ex.Message);
+        }
+    }
+
+    [HttpPost]
+    public IActionResult RegisterDoctor(DoctorDTO doctor)
+    {
+        try
+        {
+            _doctorRepository.RegisterDoctor(doctor);
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
         }
     }
 }

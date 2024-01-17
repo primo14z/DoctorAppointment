@@ -1,4 +1,6 @@
+using Mesi.Helpers;
 using Mesi.Models;
+using Mesi.Repository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,7 +16,13 @@ builder.Services.AddDbContext<ModelDbContext>(options =>
             errorNumbersToAdd: null);
     }));
 
+builder.Services.AddScoped<JwtService>();
+builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
+builder.Services.AddScoped<IPatientRepository, PatientRepository>();
+
 builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
@@ -24,7 +32,13 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
 }
 
-app.UseRouting();
+app.UseRouting(); 
+app.UseAuthentication();
+app.UseAuthorization();
+
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseEndpoints(endpoints =>
 {

@@ -48,4 +48,43 @@ public class PatientRepository : IPatientRepository
 
         return result;
     }
+
+    public void SetAppointment(AppointmentDTO appointmentDTO)
+    {
+        try
+        {
+            var date = _dbContext.Dates.Single(x => x.Date == appointmentDTO.Date);
+            var doctor = _dbContext.Doctors.Single(x => x.Id == appointmentDTO.DoctorId);
+            var patient = _dbContext.Patients.Single(x => x.Id == appointmentDTO.PatientId);
+
+            _dbContext.Appointments.Add(new Appointment
+            {
+                Date = date,
+                Doctor = doctor,
+                Patient = patient
+            });
+
+            _dbContext.SaveChanges();
+        }
+        catch
+        {
+            throw;
+        }
+    }
+
+    public void DeleteAppointment(int id)
+    {
+        try
+        {
+            var appointment = _dbContext.Appointments.Single(x => x.Id == id);
+
+            _dbContext.Appointments.Remove(appointment);
+
+            _dbContext.SaveChanges();
+        }
+        catch
+        {
+            throw new Exception("Appointment doesn't exist.");
+        }
+    }
 }

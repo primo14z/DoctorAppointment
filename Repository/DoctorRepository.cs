@@ -48,20 +48,19 @@ public class DoctorRepository : IDoctorRepository
             && appointment.Doctor.WorkEnd >= newDate.Hour)
         {
             appointment.Date.Date = newDate;
+            _dbContext.SaveChanges();
         }
         else
         {
             throw new Exception("Date cannot be smaller than original date.");
         }
-
-        _dbContext.SaveChanges();
     }
 
     public void DeleteAppointment(int id)
     {
         try
         {
-            var appointment = _dbContext.Appointments.Where(x => x.Id == id).Single();
+            var appointment = _dbContext.Appointments.Single(x => x.Id == id);
 
             _dbContext.Appointments.Remove(appointment);
 

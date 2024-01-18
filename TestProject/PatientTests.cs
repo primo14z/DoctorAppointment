@@ -20,8 +20,7 @@ public class PatientTests
         // Assert
         Assert.NotNull(result);
         Assert.IsType<List<DoctorDTO>>(result);
-        Assert.Equal(1, result.Count); // Assuming there are 2 dummy doctors in the mock data
-                                       // Add more specific assertions based on your mock data
+        Assert.Equal(1, result.Count); 
     }
 
     [Fact]
@@ -56,8 +55,7 @@ public class PatientTests
         // Assert
         Assert.NotNull(result);
         Assert.IsType<List<PatientAppointmentDTO>>(result);
-        Assert.Equal(0, result.Count); // Assuming there are 2 dummy appointments in the mock data
-                                       // Add more specific assertions based on your mock data
+        Assert.Equal(0, result.Count); 
     }
 
     [Fact]

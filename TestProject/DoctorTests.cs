@@ -20,7 +20,6 @@ public class DoctorTests
         // Assert
         Assert.NotNull(result);
         Assert.IsType<List<AppointmentDTO>>(result);
-        // Add more assertions as needed
     }
 
     [Fact]
@@ -38,7 +37,6 @@ public class DoctorTests
         // Assert
         var updatedAppointment = dbContextMock.Object.Appointments.SingleOrDefault(x => x.Id == appointmentId);
         Assert.NotNull(updatedAppointment);
-        // Add more assertions as needed
     }
 
     [Fact]
@@ -94,6 +92,5 @@ public class DoctorTests
         var addedDoctor = dbContextMock.Object.Doctors.SingleOrDefault(x => x.Name == doctorDTO.Name);
         Assert.NotNull(addedDoctor);
         Assert.Equal(doctorDTO.Department, addedDoctor.Department);
-        // Add more assertions as needed
     } 
 }

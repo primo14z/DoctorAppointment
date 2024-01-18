@@ -5,4 +5,9 @@ public class Appointment
     public Dates Date { get; set; }
     public Doctor Doctor { get; set; }
     public Patient Patient { get; set; }
+
+    public Appointment()
+    {
+        
+    }
 }

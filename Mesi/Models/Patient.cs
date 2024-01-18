@@ -11,4 +11,9 @@ public class Patient
     {
         Name = NullCheck.CheckNotNull(name, nameof(name));
     }
+
+    public Patient()
+    {
+        
+    }
 }

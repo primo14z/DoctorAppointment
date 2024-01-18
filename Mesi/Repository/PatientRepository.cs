@@ -16,7 +16,10 @@ public class PatientRepository : IPatientRepository
     {
         var result = new List<DoctorDTO>();
 
-        await _dbContext.Doctors.ForEachAsync(x => result.Add(new DoctorDTO(x.Id, x.Name, x.Department, x.WorkStart, x.WorkEnd)));
+        foreach (var item in _dbContext.Doctors)
+        {
+            result.Add(new DoctorDTO(item.Id, item.Name, item.Department, item.WorkStart, item.WorkEnd));
+        }
 
         return result;
     }

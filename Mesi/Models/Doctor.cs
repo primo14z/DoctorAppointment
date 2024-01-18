@@ -18,4 +18,9 @@ public class Doctor
         WorkStart = NullCheck.CheckGreaterThanZero(workStart, nameof(workStart));
         WorkEnd = NullCheck.CheckGreaterThanZero(workEnd, nameof(workEnd));
     }
+
+    public Doctor()
+    {
+        
+    }
 }
